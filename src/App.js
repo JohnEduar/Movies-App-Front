@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+//import logo from './logo.svg';
+//import './App.css';
+import React from "react";
+import { Header } from "./components/ui/Header";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
+import {DirectorView} from './components/director/DirectorView';
+import {GeneroView} from './components/genero/GeneroView';
+import {MediaView} from './components/media/MediaView';
+import {ProductoraView} from './components/productora/ProductoraView';
+import {TipoView} from './components/tipo/TipoView';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header />
+      <Switch>
+        <Route exact path='/tipos' component={TipoView} />
+        <Route exact path='/directores' component={DirectorView} />
+        <Route exact path='/generos' component={GeneroView} />
+        <Route exact path='/medias' component={MediaView} />
+        <Route exact path='/productoras' component={ProductoraView} />
+        <Redirect to='/tipos' />
+      </Switch>
+    </Router>
+
+
   );
 }
 
