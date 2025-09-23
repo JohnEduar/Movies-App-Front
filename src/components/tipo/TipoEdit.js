@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { updateDirector } from '../../services/directorService'
+import { updateTipo } from '../../services/tipoService'
 
-export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) => {
-  const [directorData, setDirectorData] = useState({
+export const TipoEdit = ({ tipo, handleCloseModal, listarTipos }) => {
+  const [tipoData, setTipoData] = useState({
     nombre: '',
     descripcion: '',
     estado: ''
   });
 
-  // Cargar los datos del director cuando el componente se monte
+  // Cargar los datos del tipo cuando el componente se monte
   useEffect(() => {
-    if (director) {
-      setDirectorData({
-        nombre: director.nombre || '',
-        descripcion: director.descripcion || '',
-        estado: director.estado || ''
+    if (tipo) {
+      setTipoData({
+        nombre: tipo.nombre || '',
+        descripcion: tipo.descripcion || '',
+        estado: tipo.estado || ''
       });
     }
-  }, [director]);
+  }, [tipo]);
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -27,8 +27,8 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setDirectorData({
-      ...directorData,
+    setTipoData({
+      ...tipoData,
       [name]: value
     });
   };
@@ -37,29 +37,29 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
     e.preventDefault();
     
     // Validación básica
-    if (!directorData.nombre || !directorData.descripcion || !directorData.estado) {
+    if (!tipoData.nombre || !tipoData.descripcion || !tipoData.estado) {
       alert('Por favor, complete todos los campos');
       return;
     }
 
     try {
-      await updateDirector(director._id, directorData);
-      alert('Director actualizado exitosamente');
+      await updateTipo(tipo._id, tipoData);
+      alert('Tipo actualizado exitosamente');
       
-      // Actualizar la lista de directores
-      if (listarDirectores) {
-        listarDirectores();
+      // Actualizar la lista de tipos
+      if (listarTipos) {
+        listarTipos();
       }
       
       // Cerrar el modal
       handleCloseModal();
     } catch (error) {
-      console.error('Error al actualizar director:', error);
-      alert('Error al actualizar el director. Por favor, intente nuevamente.');
+      console.error('Error al actualizar tipo:', error);
+      alert('Error al actualizar el tipo. Por favor, intente nuevamente.');
     }
   };
 
-  if (!director) {
+  if (!tipo) {
     return null;
   }
 
@@ -68,7 +68,7 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Editar Director</h5>
+            <h5 className="modal-title">Editar Tipo</h5>
             <button 
               type="button" 
               className="btn-close" 
@@ -82,30 +82,30 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
                 <input 
                   type="text" 
                   name="nombre"
-                  placeholder="Nombre del Director" 
+                  placeholder="Nombre del Tipo" 
                   className="form-control"
-                  value={directorData.nombre}
+                  value={tipoData.nombre}
                   onChange={handleInputChange}
                   required
                 />
               </div>
               <div className="col-12">
-                <input 
-                  type="text" 
+                <textarea 
                   name="descripcion"
-                  placeholder="Descripcion" 
+                  placeholder="Descripción del Tipo" 
                   className="form-control"
-                  value={directorData.descripcion}
+                  value={tipoData.descripcion}
                   onChange={handleInputChange}
+                  rows="3"
                   required
-                />
+                ></textarea>
               </div>
               <div className="col-12">
                 <select 
                   className="form-select" 
                   name="estado"
                   aria-label="Estado"
-                  value={directorData.estado}
+                  value={tipoData.estado}
                   onChange={handleInputChange}
                   required
                 >
@@ -129,7 +129,7 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
               className="btn btn-primary"
               onClick={handleSubmit}
             >
-              Actualizar Director
+              Actualizar Tipo
             </button>
           </div>
         </div>

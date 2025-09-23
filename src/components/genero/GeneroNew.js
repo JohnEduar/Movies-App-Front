@@ -1,34 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { updateDirector } from '../../services/directorService'
+import React, { useState } from 'react'
+import { createGenero } from '../../services/generoService'
 
-export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) => {
-  const [directorData, setDirectorData] = useState({
+
+export const GeneroNew = ( { handleOpenModal, listarGeneros } ) => {
+  const [genero, setGenero] = useState({
     nombre: '',
     descripcion: '',
     estado: ''
   });
 
-  // Cargar los datos del director cuando el componente se monte
-  useEffect(() => {
-    if (director) {
-      setDirectorData({
-        nombre: director.nombre || '',
-        descripcion: director.descripcion || '',
-        estado: director.estado || ''
-      });
-    }
-  }, [director]);
-
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
-      handleCloseModal();
+      handleOpenModal();
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setDirectorData({
-      ...directorData,
+    setGenero({
+      ...genero,
       [name]: value
     });
   };
@@ -37,42 +27,45 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
     e.preventDefault();
     
     // Validación básica
-    if (!directorData.nombre || !directorData.descripcion || !directorData.estado) {
+    if (!genero.nombre || !genero.descripcion || !genero.estado) {
       alert('Por favor, complete todos los campos');
       return;
     }
 
     try {
-      await updateDirector(director._id, directorData);
-      alert('Director actualizado exitosamente');
+      await createGenero(genero);
+      alert('Género guardado exitosamente');
       
-      // Actualizar la lista de directores
-      if (listarDirectores) {
-        listarDirectores();
+      // Limpiar el formulario
+      setGenero({
+        nombre: '',
+        descripcion: '',
+        estado: ''
+      });
+      
+      // Actualizar la lista de géneros
+      if (listarGeneros) {
+        listarGeneros();
       }
       
       // Cerrar el modal
-      handleCloseModal();
+      handleOpenModal();
     } catch (error) {
-      console.error('Error al actualizar director:', error);
-      alert('Error al actualizar el director. Por favor, intente nuevamente.');
+      console.error('Error al guardar género:', error);
+      alert('Error al guardar el género. Por favor, intente nuevamente.');
     }
   };
-
-  if (!director) {
-    return null;
-  }
 
   return (
     <div className="modal-backdrop" onClick={handleBackdropClick}>
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Editar Director</h5>
+            <h5 className="modal-title">Agregar Género</h5>
             <button 
               type="button" 
               className="btn-close" 
-              onClick={handleCloseModal}
+              onClick={handleOpenModal}
               aria-label="Close"
             ></button>
           </div>
@@ -82,9 +75,9 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
                 <input 
                   type="text" 
                   name="nombre"
-                  placeholder="Nombre del Director" 
+                  placeholder="Nombre del Género" 
                   className="form-control"
-                  value={directorData.nombre}
+                  value={genero.nombre}
                   onChange={handleInputChange}
                   required
                 />
@@ -93,9 +86,9 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
                 <input 
                   type="text" 
                   name="descripcion"
-                  placeholder="Descripcion" 
+                  placeholder="Descripción" 
                   className="form-control"
-                  value={directorData.descripcion}
+                  value={genero.descripcion}
                   onChange={handleInputChange}
                   required
                 />
@@ -105,7 +98,7 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
                   className="form-select" 
                   name="estado"
                   aria-label="Estado"
-                  value={directorData.estado}
+                  value={genero.estado}
                   onChange={handleInputChange}
                   required
                 >
@@ -120,7 +113,7 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
             <button 
               type="button" 
               className="btn btn-secondary" 
-              onClick={handleCloseModal}
+              onClick={handleOpenModal}
             >
               Cancelar
             </button>
@@ -129,7 +122,7 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
               className="btn btn-primary"
               onClick={handleSubmit}
             >
-              Actualizar Director
+              Guardar Género
             </button>
           </div>
         </div>

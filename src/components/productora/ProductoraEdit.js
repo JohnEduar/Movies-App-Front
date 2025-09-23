@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import { updateDirector } from '../../services/directorService'
+import { updateProductora } from '../../services/productoraService'
 
-export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) => {
-  const [directorData, setDirectorData] = useState({
+export const ProductoraEdit = ({ productora, handleCloseModal, listarProductoras }) => {
+  const [productoraData, setProductoraData] = useState({
     nombre: '',
+    slogan: '',
     descripcion: '',
     estado: ''
   });
 
-  // Cargar los datos del director cuando el componente se monte
+  // Cargar los datos de la productora cuando el componente se monte
   useEffect(() => {
-    if (director) {
-      setDirectorData({
-        nombre: director.nombre || '',
-        descripcion: director.descripcion || '',
-        estado: director.estado || ''
+    if (productora) {
+      setProductoraData({
+        nombre: productora.nombre || '',
+        slogan: productora.slogan || '',
+        descripcion: productora.descripcion || '',
+        estado: productora.estado || ''
       });
     }
-  }, [director]);
+  }, [productora]);
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -27,8 +29,8 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setDirectorData({
-      ...directorData,
+    setProductoraData({
+      ...productoraData,
       [name]: value
     });
   };
@@ -37,29 +39,29 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
     e.preventDefault();
     
     // Validación básica
-    if (!directorData.nombre || !directorData.descripcion || !directorData.estado) {
+    if (!productoraData.nombre || !productoraData.slogan || !productoraData.descripcion || !productoraData.estado) {
       alert('Por favor, complete todos los campos');
       return;
     }
 
     try {
-      await updateDirector(director._id, directorData);
-      alert('Director actualizado exitosamente');
+      await updateProductora(productora._id, productoraData);
+      alert('Productora actualizada exitosamente');
       
-      // Actualizar la lista de directores
-      if (listarDirectores) {
-        listarDirectores();
+      // Actualizar la lista de productoras
+      if (listarProductoras) {
+        listarProductoras();
       }
       
       // Cerrar el modal
       handleCloseModal();
     } catch (error) {
-      console.error('Error al actualizar director:', error);
-      alert('Error al actualizar el director. Por favor, intente nuevamente.');
+      console.error('Error al actualizar productora:', error);
+      alert('Error al actualizar la productora. Por favor, intente nuevamente.');
     }
   };
 
-  if (!director) {
+  if (!productora) {
     return null;
   }
 
@@ -68,7 +70,7 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Editar Director</h5>
+            <h5 className="modal-title">Editar Productora</h5>
             <button 
               type="button" 
               className="btn-close" 
@@ -82,9 +84,20 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
                 <input 
                   type="text" 
                   name="nombre"
-                  placeholder="Nombre del Director" 
+                  placeholder="Nombre de la Productora" 
                   className="form-control"
-                  value={directorData.nombre}
+                  value={productoraData.nombre}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="col-12">
+                <input 
+                  type="text" 
+                  name="slogan"
+                  placeholder="Slogan de la Productora" 
+                  className="form-control"
+                  value={productoraData.slogan}
                   onChange={handleInputChange}
                   required
                 />
@@ -93,9 +106,9 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
                 <input 
                   type="text" 
                   name="descripcion"
-                  placeholder="Descripcion" 
+                  placeholder="Descripción" 
                   className="form-control"
-                  value={directorData.descripcion}
+                  value={productoraData.descripcion}
                   onChange={handleInputChange}
                   required
                 />
@@ -105,7 +118,7 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
                   className="form-select" 
                   name="estado"
                   aria-label="Estado"
-                  value={directorData.estado}
+                  value={productoraData.estado}
                   onChange={handleInputChange}
                   required
                 >
@@ -129,7 +142,7 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
               className="btn btn-primary"
               onClick={handleSubmit}
             >
-              Actualizar Director
+              Actualizar Productora
             </button>
           </div>
         </div>

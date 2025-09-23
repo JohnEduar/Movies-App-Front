@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { updateDirector } from '../../services/directorService'
+import { updateMedia } from '../../services/mediaService'
 
-export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) => {
-  const [directorData, setDirectorData] = useState({
+export const MediaEdit = ({ media, handleCloseModal, listarMedias }) => {
+  const [mediaData, setMediaData] = useState({
     nombre: '',
     descripcion: '',
     estado: ''
   });
 
-  // Cargar los datos del director cuando el componente se monte
+  // Cargar los datos de la media cuando el componente se monte
   useEffect(() => {
-    if (director) {
-      setDirectorData({
-        nombre: director.nombre || '',
-        descripcion: director.descripcion || '',
-        estado: director.estado || ''
+    if (media) {
+      setMediaData({
+        nombre: media.nombre || '',
+        descripcion: media.descripcion || '',
+        estado: media.estado || ''
       });
     }
-  }, [director]);
+  }, [media]);
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -27,8 +27,8 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setDirectorData({
-      ...directorData,
+    setMediaData({
+      ...mediaData,
       [name]: value
     });
   };
@@ -37,29 +37,29 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
     e.preventDefault();
     
     // Validación básica
-    if (!directorData.nombre || !directorData.descripcion || !directorData.estado) {
+    if (!mediaData.nombre || !mediaData.descripcion || !mediaData.estado) {
       alert('Por favor, complete todos los campos');
       return;
     }
 
     try {
-      await updateDirector(director._id, directorData);
-      alert('Director actualizado exitosamente');
+      await updateMedia(media._id, mediaData);
+      alert('Media actualizada exitosamente');
       
-      // Actualizar la lista de directores
-      if (listarDirectores) {
-        listarDirectores();
+      // Actualizar la lista de medias
+      if (listarMedias) {
+        listarMedias();
       }
       
       // Cerrar el modal
       handleCloseModal();
     } catch (error) {
-      console.error('Error al actualizar director:', error);
-      alert('Error al actualizar el director. Por favor, intente nuevamente.');
+      console.error('Error al actualizar media:', error);
+      alert('Error al actualizar la media. Por favor, intente nuevamente.');
     }
   };
 
-  if (!director) {
+  if (!media) {
     return null;
   }
 
@@ -68,7 +68,7 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Editar Director</h5>
+            <h5 className="modal-title">Editar Media</h5>
             <button 
               type="button" 
               className="btn-close" 
@@ -82,9 +82,9 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
                 <input 
                   type="text" 
                   name="nombre"
-                  placeholder="Nombre del Director" 
+                  placeholder="Nombre de la Media" 
                   className="form-control"
-                  value={directorData.nombre}
+                  value={mediaData.nombre}
                   onChange={handleInputChange}
                   required
                 />
@@ -93,9 +93,9 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
                 <input 
                   type="text" 
                   name="descripcion"
-                  placeholder="Descripcion" 
+                  placeholder="Descripción" 
                   className="form-control"
-                  value={directorData.descripcion}
+                  value={mediaData.descripcion}
                   onChange={handleInputChange}
                   required
                 />
@@ -105,7 +105,7 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
                   className="form-select" 
                   name="estado"
                   aria-label="Estado"
-                  value={directorData.estado}
+                  value={mediaData.estado}
                   onChange={handleInputChange}
                   required
                 >
@@ -129,7 +129,7 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
               className="btn btn-primary"
               onClick={handleSubmit}
             >
-              Actualizar Director
+              Actualizar Media
             </button>
           </div>
         </div>
