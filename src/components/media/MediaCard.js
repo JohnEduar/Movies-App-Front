@@ -4,127 +4,95 @@ export const MediaCard = ({ media, handleEdit, handleDelete }) => {
   return (
     <div className="col">
       <div className="card h-100">
-        {/* Imagen de la media */}
-        <img 
-          src={media.imagen} 
-          className="card-img-top" 
-          alt={media.titulo}
-          style={{height: '200px', objectFit: 'cover'}}
-          onError={(e) => {
-            e.target.src = 'https://via.placeholder.com/300x200?text=Sin+Imagen'
-          }}
-        />
+        {media.imagen && (
+          <img 
+            src={media.imagen} 
+            className="card-img-top" 
+            alt={media.titulo}
+            style={{ height: '200px', objectFit: 'cover' }}
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+        )}
         
-        <div className="card-body">
-          {/* Título principal */}
-          <h5 className="card-title text-primary">{media.titulo}</h5>
+        <div className="card-body d-flex flex-column">
+          <div className="d-flex justify-content-between align-items-start mb-2">
+            <h5 className="card-title">{media.titulo}</h5>
+            <span className="badge bg-primary ms-2">{media.anioEstreno}</span>
+          </div>
           
-          {/* Serial y Año */}
-          <div className="row mb-2">
-            <div className="col-6">
-              <small className="text-muted">Serial:</small>
-              <p className="mb-0 fw-bold">{media.serial}</p>
-            </div>
-            <div className="col-6">
-              <small className="text-muted">Año:</small>
-              <p className="mb-0 fw-bold">{media.anioEstreno}</p>
-            </div>
-          </div>
-
-          {/* Sinopsis */}
-          <div className="mb-2">
-            <small className="text-muted">Sinopsis:</small>
-            <p className="card-text" style={{fontSize: '0.9rem'}}>
-              {media.sinopsis && media.sinopsis.length > 100 
-                ? `${media.sinopsis.substring(0, 100)}...` 
-                : media.sinopsis}
-            </p>
-          </div>
-
-          {/* Relaciones */}
-          <div className="row mb-2">
-            <div className="col-6">
-              <small className="text-muted">Género:</small>
-              <p className="mb-0">
-                <span className="badge bg-secondary">
-                  {media.generoPrincipal?.nombre || 'N/A'}
+          <p className="card-text text-muted small mb-2">
+            <strong>Serial:</strong> {media.serial}
+          </p>
+          
+          <p className="card-text flex-grow-1" style={{ 
+            display: '-webkit-box', 
+            WebkitLineClamp: 3, 
+            WebkitBoxOrient: 'vertical', 
+            overflow: 'hidden' 
+          }}>
+            {media.sinopsis}
+          </p>
+          
+          <div className="mt-auto">
+            <div className="row g-2 mb-3">
+              <div className="col-6">
+                <span className="badge bg-secondary w-100">
+                  <i className="fas fa-theater-masks me-1"></i>
+                  {media.generoPrincipal?.nombre || 'Sin género'}
                 </span>
-              </p>
-            </div>
-            <div className="col-6">
-              <small className="text-muted">Tipo:</small>
-              <p className="mb-0">
-                <span className="badge bg-info">
-                  {media.tipo?.nombre || 'N/A'}
+              </div>
+              <div className="col-6">
+                <span className="badge bg-info w-100">
+                  <i className="fas fa-film me-1"></i>
+                  {media.tipo?.nombre || 'Sin tipo'}
                 </span>
-              </p>
+              </div>
+              <div className="col-6">
+                <span className="badge bg-warning text-dark w-100">
+                  <i className="fas fa-user-tie me-1"></i>
+                  {media.directorPrincipal?.nombre || 'Sin director'}
+                </span>
+              </div>
+              <div className="col-6">
+                <span className="badge bg-success w-100">
+                  <i className="fas fa-building me-1"></i>
+                  {media.productora?.nombre || 'Sin productora'}
+                </span>
+              </div>
             </div>
-          </div>
-
-          <div className="row mb-2">
-            <div className="col-12">
-              <small className="text-muted">Director:</small>
-              <p className="mb-1 fw-semibold">{media.directorPrincipal?.nombre || 'N/A'}</p>
-            </div>
-          </div>
-
-          <div className="row mb-2">
-            <div className="col-12">
-              <small className="text-muted">Productora:</small>
-              <p className="mb-1">{media.productora?.nombre || 'N/A'}</p>
-            </div>
-          </div>
-
-          {/* Información técnica */}
-          <div className="mt-3">
-            <small className="text-muted d-block">ID: {media._id}</small>
-            <small className="text-muted d-block">
-              Fecha de creación: {new Date(media.fechaCreacion).toLocaleDateString()}
-            </small>
+            
             {media.url && (
-              <small className="d-block mt-1">
+              <div className="mb-2">
                 <a 
                   href={media.url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-decoration-none"
+                  className="btn btn-outline-primary btn-sm w-100"
                 >
-                  <i className="fa-solid fa-external-link-alt"></i> Ver media
+                  <i className="fas fa-external-link-alt me-1"></i>
+                  Ver contenido
                 </a>
-              </small>
+              </div>
             )}
-          </div>
-        </div>
-
-        <div className="card-footer d-flex justify-content-between align-items-center">
-          <div className="btn-group" role="group">
-            <button 
-              type="button" 
-              className="btn btn-outline-primary btn-sm"
-              onClick={() => handleEdit(media)}
-              title="Editar media"
-            >
-              <i className="fa-solid fa-edit"></i> Editar
-            </button>
-            <button 
-              type="button" 
-              className="btn btn-outline-danger btn-sm"
-              onClick={() => handleDelete(media._id)}
-              title="Eliminar media"
-            >
-              <i className="fa-solid fa-trash"></i> Eliminar
-            </button>
-          </div>
-          
-          {/* Indicador visual del tipo */}
-          <div>
-            <span className={`badge ${
-              media.tipo?.nombre?.toLowerCase() === 'película' ? 'bg-warning' : 
-              media.tipo?.nombre?.toLowerCase() === 'serie' ? 'bg-success' : 
-              'bg-primary'
-            }`}>
-              {media.tipo?.nombre || 'Media'}
-            </span>
+            
+            <div className="d-flex gap-2">
+              <button 
+                className="btn btn-outline-warning btn-sm flex-fill"
+                onClick={() => handleEdit(media)}
+              >
+                <i className="fas fa-edit me-1"></i>
+                Editar
+              </button>
+              <button 
+                className="btn btn-outline-danger btn-sm flex-fill"
+                onClick={() => handleDelete(media._id)}
+              >
+                <i className="fas fa-trash me-1"></i>
+                Eliminar
+              </button>
+            </div>
           </div>
         </div>
       </div>

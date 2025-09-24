@@ -2,33 +2,49 @@ import React from 'react'
 
 export const DirectorCard = ({ director, handleEdit, handleDelete }) => {
   return (
-    <div className="row row-cols-1 row-cols-md-2 g-4">
-      <div className="col">
-        <div className="card">
-          <img src={director.image} className="card-img-top" alt={director.name} />
-          <div className="card-body">
-            <p className="card-text">{`ID: ${director._id}`}</p>
-            <p className="card-text">{`Nombre: ${director.nombre}`}</p>
-            <p className="card-text">{`Estado: ${director.estado}`}</p>
-            <p className="card-text">{`Fecha de creacion: ${director.fechaCreacion}`}</p>
+    <div className="col">
+      <div className="card h-100">
+        <div className="card-body d-flex flex-column">
+          <div className="d-flex justify-content-between align-items-start mb-2">
+            <h5 className="card-title">{director.nombre}</h5>
+            <span className={`badge ${director.estado === 'activo' ? 'bg-success' : 'bg-danger'} ms-2`}>
+              {director.estado}
+            </span>
           </div>
-          <div className="card-footer d-flex justify-content-between align-items-center">
-            <div className="btn-group" role="group">
+          
+          <div className="flex-grow-1">
+            <p className="card-text text-muted small mb-2">
+              <strong>ID:</strong> {director._id}
+            </p>
+            
+            {director.fechaCreacion && (
+              <p className="card-text text-muted small mb-2">
+                <strong>Fecha de creación:</strong> {new Date(director.fechaCreacion).toLocaleDateString()}
+              </p>
+            )}
+            
+            {director.fechaActualizacion && (
+              <p className="card-text text-muted small">
+                <strong>Última actualización:</strong> {new Date(director.fechaActualizacion).toLocaleDateString()}
+              </p>
+            )}
+          </div>
+          
+          <div className="mt-auto pt-3">
+            <div className="d-flex gap-2">
               <button 
-                type="button" 
-                className="btn btn-outline-primary btn-sm"
+                className="btn btn-outline-warning btn-sm flex-fill"
                 onClick={() => handleEdit(director)}
-                title="Editar director"
               >
-                <i className="fa-solid fa-edit"></i> Editar
+                <i className="fas fa-edit me-1"></i>
+                Editar
               </button>
               <button 
-                type="button" 
-                className="btn btn-outline-danger btn-sm"
+                className="btn btn-outline-danger btn-sm flex-fill"
                 onClick={() => handleDelete(director._id)}
-                title="Eliminar director"
               >
-                <i className="fa-solid fa-trash"></i> Eliminar
+                <i className="fas fa-trash me-1"></i>
+                Eliminar
               </button>
             </div>
           </div>

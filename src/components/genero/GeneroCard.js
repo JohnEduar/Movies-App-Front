@@ -2,35 +2,62 @@ import React from 'react'
 
 export const GeneroCard = ({ genero, handleEdit, handleDelete }) => {
   return (
-    <div className="row row-cols-1 row-cols-md-2 g-4">
-      <div className="col">
-        <div className="card">
-          <img src={genero.image} className="card-img-top" alt={genero.name} />
-          <div className="card-body">
-            <p className="card-text">{`ID: ${genero._id || genero.id}`}</p>
-            <p className="card-text">{`Nombre: ${genero.nombre}`}</p>
-            <p className="card-text">{`Descripción: ${genero.descripcion}`}</p>
-            <p className="card-text">{`Estado: ${genero.estado}`}</p>
-            <p className="card-text">{`Fecha de Creación: ${genero.fechaCreacion}`}</p>
-            <p className="card-text">{`Fecha de Actualización: ${genero.fechaActualizacion}`}</p>
+    <div className="col">
+      <div className="card h-100">
+        <div className="card-body d-flex flex-column">
+          <div className="d-flex justify-content-between align-items-start mb-2">
+            <h5 className="card-title">{genero.nombre}</h5>
+            <span className={`badge ${genero.estado === 'activo' ? 'bg-success' : 'bg-danger'} ms-2`}>
+              {genero.estado}
+            </span>
           </div>
-          <div className="card-footer d-flex justify-content-between align-items-center">
-            <div className="btn-group" role="group">
+          
+          <div className="flex-grow-1">
+            <p className="card-text text-muted small mb-2">
+              <strong>ID:</strong> {genero._id || genero.id}
+            </p>
+            
+            {genero.descripcion && (
+              <p className="card-text mb-2" style={{ 
+                display: '-webkit-box', 
+                WebkitLineClamp: 3, 
+                WebkitBoxOrient: 'vertical', 
+                overflow: 'hidden' 
+              }}>
+                {genero.descripcion}
+              </p>
+            )}
+            
+            <div className="mt-auto">
+              {genero.fechaCreacion && (
+                <p className="card-text text-muted small mb-1">
+                  <strong>Creado:</strong> {new Date(genero.fechaCreacion).toLocaleDateString()}
+                </p>
+              )}
+              
+              {genero.fechaActualizacion && (
+                <p className="card-text text-muted small mb-0">
+                  <strong>Actualizado:</strong> {new Date(genero.fechaActualizacion).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+          </div>
+          
+          <div className="mt-auto pt-3">
+            <div className="d-flex gap-2">
               <button 
-                type="button" 
-                className="btn btn-outline-primary btn-sm"
+                className="btn btn-outline-warning btn-sm flex-fill"
                 onClick={() => handleEdit(genero)}
-                title="Editar género"
               >
-                <i className="fa-solid fa-edit"></i> Editar
+                <i className="fas fa-edit me-1"></i>
+                Editar
               </button>
               <button 
-                type="button" 
-                className="btn btn-outline-danger btn-sm"
-                onClick={() => handleDelete(genero._id)}
-                title="Eliminar género"
+                className="btn btn-outline-danger btn-sm flex-fill"
+                onClick={() => handleDelete(genero._id || genero.id)}
               >
-                <i className="fa-solid fa-trash"></i> Eliminar
+                <i className="fas fa-trash me-1"></i>
+                Eliminar
               </button>
             </div>
           </div>

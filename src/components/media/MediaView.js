@@ -1,44 +1,48 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { getMedias, deleteMedia } from '../../services/mediaService'
-import { useState, useEffect } from 'react'
 import { MediaCard } from './MediaCard'
 import { MediaNew } from './MediaNew'
 import { MediaEdit } from './MediaEdit'
 
-
 export const MediaView = () => {
-  const [medias, setMedias] = useState([])
+  const [medias, setMedias] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [mediaToEdit, setMediaToEdit] = useState(null);
 
+  // Cargar lista de medias
   const listMedias = async () => {
     try {
-      const {data} = await getMedias()
-      setMedias(data)
+      const { data } = await getMedias();
+      setMedias(data);
     } catch (error) {
-      console.error("Error al listar medias:", error)
+      console.error("Error al listar medias:", error);
     }
   };
 
+  // Cargar medias al montar el componente
   useEffect(() => {
-    listMedias()
-  }, [])
+    listMedias();
+  }, []);
 
+  // Abrir/cerrar modal de crear
   const handleOpenModal = () => {
     setOpenModal(!openModal);
   };
 
+  // Abrir modal de editar
   const handleEdit = (media) => {
     setMediaToEdit(media);
     setOpenEditModal(true);
   };
 
+  // Cerrar modal de editar
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
     setMediaToEdit(null);
   };
 
+  // Eliminar media
   const handleDelete = async (mediaId) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar esta media?')) {
       try {
@@ -55,43 +59,39 @@ export const MediaView = () => {
   return (
     <div className="container">
       <div className="row row-cols-1 row-cols-md-2 g-4">
-        {
-          medias.map(media => {
-            return <MediaCard 
-              key={media._id} 
-              media={media} 
-              handleEdit={handleEdit}
-              handleDelete={handleDelete}
-            />
-          })
-        }
+        {medias.map(media => (
+          <MediaCard 
+            key={media._id} 
+            media={media} 
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+          />
+        ))}
       </div>
       
-      {/* Modal para agregar media */}
-      {
-        openModal && <MediaNew 
+      {/* Modal para crear media */}
+      {openModal && (
+        <MediaNew 
           handleOpenModal={handleOpenModal} 
           listarMedias={listMedias} 
         />
-      }
+      )}
       
       {/* Modal para editar media */}
-      {
-        openEditModal && <MediaEdit 
+      {openEditModal && (
+        <MediaEdit 
           media={mediaToEdit}
           handleCloseModal={handleCloseEditModal} 
           listarMedias={listMedias} 
         />
-      }
+      )}
       
       {/* Botón flotante para agregar */}
-      {
-        !openModal && !openEditModal && (
-          <button className="btn btn-primary fab" onClick={handleOpenModal}>
-            <i className="fa-solid fa-plus"></i>
-          </button>
-        )
-      }
+      {!openModal && !openEditModal && (
+        <button className="btn btn-primary fab" onClick={handleOpenModal}>
+          <i className="fa-solid fa-plus"></i>
+        </button>
+      )}
     </div>
   );
-}
+};
