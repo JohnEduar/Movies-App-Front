@@ -7,7 +7,8 @@ export const ProductoraNew = ( { handleOpenModal, listarProductoras } ) => {
     nombre: '',
     slogan: '',
     descripcion: '',
-    estado: ''
+    estado: '',
+    imagen: ''
   });
 
   const handleBackdropClick = (e) => {
@@ -42,7 +43,8 @@ export const ProductoraNew = ( { handleOpenModal, listarProductoras } ) => {
         nombre: '',
         slogan: '',
         descripcion: '',
-        estado: ''
+        estado: '',
+        imagen: ''
       });
       
       // Actualizar la lista de productoras
@@ -119,6 +121,19 @@ export const ProductoraNew = ( { handleOpenModal, listarProductoras } ) => {
                   <option value="activo">Activo</option>
                   <option value="inactivo">Inactivo</option>
                 </select>
+              </div>
+              <div className="col-12">
+                <input 
+                  type="url" 
+                  name="imagen"
+                  placeholder="URL de la imagen (opcional)" 
+                  className="form-control"
+                  value={productora.imagen}
+                  onChange={handleInputChange}
+                />
+                <div className="form-text">
+                  Agregue una URL válida para la imagen de la productora
+                </div>
               </div>
             </form>
           </div>

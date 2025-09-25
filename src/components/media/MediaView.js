@@ -14,6 +14,8 @@ export const MediaView = () => {
   const listMedias = async () => {
     try {
       const { data } = await getMedias();
+      console.log('📋 Medias recibidas del backend:', data);
+      console.log('📸 Primera media con imagen:', data.find(m => m.imagen));
       setMedias(data);
     } catch (error) {
       console.error("Error al listar medias:", error);
@@ -57,8 +59,8 @@ export const MediaView = () => {
   };
 
   return (
-    <div className="container">
-      <div className="row row-cols-1 row-cols-md-2 g-4">
+    <div className="container mt-4 mb-5">
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
         {medias.map(media => (
           <MediaCard 
             key={media._id} 

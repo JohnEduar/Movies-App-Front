@@ -4,6 +4,54 @@ export const GeneroCard = ({ genero, handleEdit, handleDelete }) => {
   return (
     <div className="col">
       <div className="card h-100">
+        {/* Contenedor de imagen*/}
+        <div style={{ 
+          height: '320px',
+          overflow: 'hidden',
+          backgroundColor: '#f8f9fa',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer'
+        }}>
+          {genero.imagen ? (
+            <img 
+              src={genero.imagen} 
+              className="card-img-top" 
+              alt={genero.nombre}
+              style={{ 
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                transition: 'transform 0.3s ease'
+              }}
+              onError={(e) => {
+                console.error('❌ Error cargando imagen de género:', genero.imagen);
+                e.target.src = 'https://picsum.photos/300/400?random=' + Math.floor(Math.random() * 1000);
+                e.target.style.opacity = '0.8';
+              }}
+              onLoad={(e) => {
+                console.log('✅ Imagen de género cargada exitosamente:', genero.imagen);
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'scale(1.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'scale(1)';
+              }}
+            />
+          ) : (
+            <div style={{ 
+              color: '#6c757d',
+              fontSize: '14px',
+              textAlign: 'center'
+            }}>
+              <i className="bi bi-tag" style={{fontSize: '32px', display: 'block', marginBottom: '8px'}}></i>
+              SIN IMAGEN
+            </div>
+          )}
+        </div>
+        
         <div className="card-body d-flex flex-column">
           <div className="d-flex justify-content-between align-items-start mb-2">
             <h5 className="card-title">{genero.nombre}</h5>

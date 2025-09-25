@@ -1,20 +1,61 @@
 import React from 'react'
 
 export const MediaCard = ({ media, handleEdit, handleDelete }) => {
+  // Debug: verificar datos que llegan
+  console.log('MediaCard recibió media:', media);
+  console.log('URL de imagen:', media.imagen);
+
   return (
     <div className="col">
       <div className="card h-100">
-        {media.imagen && (
-          <img 
-            src={media.imagen} 
-            className="card-img-top" 
-            alt={media.titulo}
-            style={{ height: '200px', objectFit: 'cover' }}
-            onError={(e) => {
-              e.target.style.display = 'none';
-            }}
-          />
-        )}
+        {/* Contenedor de imagen con tamaño tipo poster */}
+        <div style={{ 
+          height: '450px', // Más alto para formato poster
+          overflow: 'hidden',
+          backgroundColor: '#f8f9fa',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer'
+        }}>
+          {media.imagen ? (
+            <img 
+              src={media.imagen} 
+              className="card-img-top" 
+              alt={media.titulo}
+              style={{ 
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                transition: 'transform 0.3s ease'
+              }}
+              onError={(e) => {
+                console.error('❌ Error cargando imagen:', media.imagen);
+                // Mostrar imagen placeholder en lugar de ocultar
+                e.target.src = 'https://picsum.photos/300/200?random=' + Math.floor(Math.random() * 1000);
+                e.target.style.opacity = '0.8';
+              }}
+              onLoad={(e) => {
+                console.log('✅ Imagen cargada exitosamente:', media.imagen);
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'scale(1.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'scale(1)';
+              }}
+            />
+          ) : (
+            <div style={{ 
+              color: '#6c757d',
+              fontSize: '14px',
+              textAlign: 'center'
+            }}>
+              <i className="bi bi-image" style={{fontSize: '32px', display: 'block', marginBottom: '8px'}}></i>
+              SIN IMAGEN
+            </div>
+          )}
+        </div>
         
         <div className="card-body d-flex flex-column">
           <div className="d-flex justify-content-between align-items-start mb-2">

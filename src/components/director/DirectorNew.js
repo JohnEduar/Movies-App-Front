@@ -6,7 +6,8 @@ export const DirectorNew = ( { handleOpenModal, listarDirectores } ) => {
   const [director, setDirector] = useState({
     nombre: '',
     descripcion: '',
-    estado: ''
+    estado: '',
+    imagen: ''
   });
 
   const handleBackdropClick = (e) => {
@@ -33,13 +34,20 @@ export const DirectorNew = ( { handleOpenModal, listarDirectores } ) => {
     }
 
     try {
-      await createDirector(director);
+      const response = await createDirector(director);
       alert('Director guardado exitosamente');
+      
+      // Guardar imagen localmente ya que el backend no la maneja
+      if (director.imagen && response.data._id) {
+        localStorage.setItem(`director_imagen_${response.data._id}`, director.imagen);
+      }
       
       // Limpiar el formulario
       setDirector({
         nombre: '',
-        estado: ''
+        descripcion: '',
+        estado: '',
+        imagen: ''
       });
       
       // Actualizar la lista de directores
@@ -79,6 +87,16 @@ export const DirectorNew = ( { handleOpenModal, listarDirectores } ) => {
                   value={director.nombre}
                   onChange={handleInputChange}
                   required
+                />
+              </div>
+              <div className="col-12">
+                <input 
+                  type="url" 
+                  name="imagen"
+                  placeholder="URL de la imagen del Director" 
+                  className="form-control"
+                  value={director.imagen}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="col-12">

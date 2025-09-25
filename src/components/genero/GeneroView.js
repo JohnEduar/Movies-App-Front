@@ -53,8 +53,8 @@ export const GeneroView = () => {
   };
 
   return (
-    <div className="container">
-      <div className="row row-cols-1 row-cols-md-2 g-4">
+    <div className="container mt-4 mb-5">
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-3">
         {
           generos.map(genero => {
             return <GeneroCard 
@@ -67,7 +67,7 @@ export const GeneroView = () => {
         }
       </div>
       
-      {/* Modal para agregar género */}
+      
       {
         openModal && <GeneroNew 
           handleOpenModal={handleOpenModal} 
@@ -75,7 +75,7 @@ export const GeneroView = () => {
         />
       }
       
-      {/* Modal para editar género */}
+      
       {
         openEditModal && <GeneroEdit 
           genero={generoToEdit}
@@ -84,7 +84,7 @@ export const GeneroView = () => {
         />
       }
       
-      {/* Botón flotante para agregar */}
+      
       {
         !openModal && !openEditModal && (
           <button className="btn btn-primary fab" onClick={handleOpenModal}>

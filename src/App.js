@@ -1,7 +1,6 @@
-//import logo from './logo.svg';
-//import './App.css';
 import React from "react";
 import { Header } from "./components/ui/Header";
+import Footer from "./components/ui/Footer";
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,18 +16,22 @@ import {TipoView} from './components/tipo/TipoView';
 
 function App() {
   return (
-    <Router>
-      <Header />
-      <Switch>
-        <Route exact path='/medias' component={MediaView} />
-        <Route exact path='/tipos' component={TipoView} />
-        <Route exact path='/directores' component={DirectorView} />
-        <Route exact path='/generos' component={GeneroView} />
-        <Route exact path='/productoras' component={ProductoraView} />
-        <Redirect to='/medias' />
-      </Switch>
-    </Router>
-
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Router>
+        <Header />
+        <div style={{ flex: '1' }}>
+          <Switch>
+            <Route exact path='/medias' component={MediaView} />
+            <Route exact path='/tipos' component={TipoView} />
+            <Route exact path='/directores' component={DirectorView} />
+            <Route exact path='/generos' component={GeneroView} />
+            <Route exact path='/productoras' component={ProductoraView} />
+            <Redirect to='/medias' />
+          </Switch>
+        </div>
+        <Footer />
+      </Router>
+    </div>
 
   );
 }

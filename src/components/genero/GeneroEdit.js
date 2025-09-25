@@ -5,7 +5,8 @@ export const GeneroEdit = ({ genero, handleCloseModal, listarGeneros }) => {
   const [generoData, setGeneroData] = useState({
     nombre: '',
     descripcion: '',
-    estado: ''
+    estado: '',
+    imagen: ''
   });
 
   // Cargar los datos del género cuando el componente se monte
@@ -14,7 +15,8 @@ export const GeneroEdit = ({ genero, handleCloseModal, listarGeneros }) => {
       setGeneroData({
         nombre: genero.nombre || '',
         descripcion: genero.descripcion || '',
-        estado: genero.estado || ''
+        estado: genero.estado || '',
+        imagen: genero.imagen || ''
       });
     }
   }, [genero]);
@@ -36,6 +38,8 @@ export const GeneroEdit = ({ genero, handleCloseModal, listarGeneros }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    const generoId = genero._id || genero.id; // Usar id o _id
+    
     // Validación básica
     if (!generoData.nombre || !generoData.descripcion || !generoData.estado) {
       alert('Por favor, complete todos los campos');
@@ -43,7 +47,7 @@ export const GeneroEdit = ({ genero, handleCloseModal, listarGeneros }) => {
     }
 
     try {
-      await updateGenero(genero._id, generoData);
+      await updateGenero(generoId, generoData);
       alert('Género actualizado exitosamente');
       
       // Actualizar la lista de géneros
@@ -98,6 +102,16 @@ export const GeneroEdit = ({ genero, handleCloseModal, listarGeneros }) => {
                   value={generoData.descripcion}
                   onChange={handleInputChange}
                   required
+                />
+              </div>
+              <div className="col-12">
+                <input 
+                  type="url" 
+                  name="imagen"
+                  placeholder="URL de la imagen del Género" 
+                  className="form-control"
+                  value={generoData.imagen}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="col-12">

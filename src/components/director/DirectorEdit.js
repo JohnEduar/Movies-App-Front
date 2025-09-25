@@ -5,16 +5,19 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
   const [directorData, setDirectorData] = useState({
     nombre: '',
     descripcion: '',
-    estado: ''
+    estado: '',
+    imagen: ''
   });
 
   // Cargar los datos del director cuando el componente se monte
   useEffect(() => {
     if (director) {
+      const imagenGuardada = localStorage.getItem(`director_imagen_${director._id}`);
       setDirectorData({
         nombre: director.nombre || '',
         descripcion: director.descripcion || '',
-        estado: director.estado || ''
+        estado: director.estado || '',
+        imagen: director.imagen || imagenGuardada || ''
       });
     }
   }, [director]);
@@ -43,6 +46,11 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
     }
 
     try {
+      // Guardar imagen localmente ya que el backend no la maneja
+      if (directorData.imagen) {
+        localStorage.setItem(`director_imagen_${director._id}`, directorData.imagen);
+      }
+      
       await updateDirector(director._id, directorData);
       alert('Director actualizado exitosamente');
       
@@ -87,6 +95,16 @@ export const DirectorEdit = ({ director, handleCloseModal, listarDirectores }) =
                   value={directorData.nombre}
                   onChange={handleInputChange}
                   required
+                />
+              </div>
+              <div className="col-12">
+                <input 
+                  type="url" 
+                  name="imagen"
+                  placeholder="URL de la imagen del Director" 
+                  className="form-control"
+                  value={directorData.imagen}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="col-12">

@@ -6,7 +6,8 @@ export const ProductoraEdit = ({ productora, handleCloseModal, listarProductoras
     nombre: '',
     slogan: '',
     descripcion: '',
-    estado: ''
+    estado: '',
+    imagen: ''
   });
 
   // Cargar los datos de la productora cuando el componente se monte
@@ -16,7 +17,8 @@ export const ProductoraEdit = ({ productora, handleCloseModal, listarProductoras
         nombre: productora.nombre || '',
         slogan: productora.slogan || '',
         descripcion: productora.descripcion || '',
-        estado: productora.estado || ''
+        estado: productora.estado || '',
+        imagen: productora.imagen || ''
       });
     }
   }, [productora]);
@@ -126,6 +128,19 @@ export const ProductoraEdit = ({ productora, handleCloseModal, listarProductoras
                   <option value="activo">Activo</option>
                   <option value="inactivo">Inactivo</option>
                 </select>
+              </div>
+              <div className="col-12">
+                <input 
+                  type="url" 
+                  name="imagen"
+                  placeholder="URL de la imagen (opcional)" 
+                  className="form-control"
+                  value={productoraData.imagen}
+                  onChange={handleInputChange}
+                />
+                <div className="form-text">
+                  Agregue una URL válida para la imagen de la productora
+                </div>
               </div>
             </form>
           </div>

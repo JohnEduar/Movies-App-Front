@@ -6,7 +6,8 @@ export const GeneroNew = ( { handleOpenModal, listarGeneros } ) => {
   const [genero, setGenero] = useState({
     nombre: '',
     descripcion: '',
-    estado: ''
+    estado: '',
+    imagen: ''
   });
 
   const handleBackdropClick = (e) => {
@@ -40,7 +41,8 @@ export const GeneroNew = ( { handleOpenModal, listarGeneros } ) => {
       setGenero({
         nombre: '',
         descripcion: '',
-        estado: ''
+        estado: '',
+        imagen: ''
       });
       
       // Actualizar la lista de géneros
@@ -91,6 +93,16 @@ export const GeneroNew = ( { handleOpenModal, listarGeneros } ) => {
                   value={genero.descripcion}
                   onChange={handleInputChange}
                   required
+                />
+              </div>
+              <div className="col-12">
+                <input 
+                  type="url" 
+                  name="imagen"
+                  placeholder="URL de la imagen del Género" 
+                  className="form-control"
+                  value={genero.imagen}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="col-12">

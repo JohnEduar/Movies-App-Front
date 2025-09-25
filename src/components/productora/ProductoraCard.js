@@ -1,9 +1,29 @@
 import React from 'react'
 
 export const ProductoraCard = ({ productora, handleEdit, handleDelete }) => {
+  const handleImageError = (e) => {
+    const randomId = Math.floor(Math.random() * 1000);
+    e.target.src = `https://picsum.photos/400/280?random=${randomId}`;
+  };
+
   return (
     <div className="col">
       <div className="card h-100">
+        {/* Contenedor de imagen */}
+        <div className="position-relative overflow-hidden" style={{ height: '320px' }}>
+          <img 
+            src={productora.imagen || `https://picsum.photos/400/320?random=${productora._id}`} 
+            alt={productora.nombre}
+            className="card-img-top h-100 w-100"
+            style={{
+              objectFit: 'cover',
+              transition: 'transform 0.3s ease',
+            }}
+            onError={handleImageError}
+            onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+          />
+        </div>
         <div className="card-body d-flex flex-column">
           <div className="d-flex justify-content-between align-items-start mb-2">
             <h5 className="card-title">{productora.nombre}</h5>
